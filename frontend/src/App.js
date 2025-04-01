@@ -3,7 +3,7 @@ import './App.css';
 import PostList from './components/PostList';
 import { setToken } from './APIController';
 import { useState } from 'react';
-
+import SideNav from './components/UI/Menu';
 function App() {
   const [showPosts, setShowPosts] = useState(false);
 
@@ -31,6 +31,7 @@ function App() {
         <input type="password" placeholder="Enter your password" />
         <button type="submit">Login</button>
       </form>) : (<PostList />)}
+      <SideNav />
     </div>
   );
 }
