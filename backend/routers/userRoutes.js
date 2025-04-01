@@ -3,9 +3,9 @@ const userRouter = Router();
 
 const {login, register, verifyToken} = require("../controller/authenticationController");
 
-userRouter.post("/login", (req, res) => {
+userRouter.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    const result = login(email, password);
+    const result = await login(email, password);
     res.json(result);
 });
 
