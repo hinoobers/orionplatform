@@ -1,9 +1,5 @@
 let TOKEN = null;
 
-const setToken = (token) => {
-    TOKEN = token;
-}
-
 const getPosts = async () =>{
     const result = await fetch("http://localhost:3001/posts/listall");
     const data = await result.json();
@@ -16,7 +12,21 @@ const getPosts = async () =>{
     return data.posts;
 };
 
+const handleLogin = (email, password) => {
+    fetch('http://localhost:3001/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    }).then(res => res.json()).then(data => {
+        sessionStorage.setItem('token', data.token);
+        TOKEN = data.token;
+
+    });
+}
+
 module.exports = {
-    setToken,
+    handleLogin,
     getPosts
 }

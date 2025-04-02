@@ -1,18 +1,18 @@
+import './SideNav.css'
+
 const SideNav = () => {
   return (
-    <nav>
+    <nav className='sidenav'>
       <div id="nav-content">
-        <li className="nav-button">
+        <div className='nav-button'>
           <a className="fa fa-home"></a>
-          <span></span>
-        </li>
-        <li className="nav-button">
+        </div>
+        <div className='nav-button'>
           <a className="fa fa-user"></a>
-          <span></span>
-        </li>
-        <li className="nav-button">
+        </div>
+        <div className='nav-button'>
           <button>Tweet</button>
-        </li>
+        </div>
       </div>
     </nav>
   )
