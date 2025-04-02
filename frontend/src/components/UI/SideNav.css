@@ -32,6 +32,7 @@
     transition: background-color 0.3s;
     height: 50px;
     font-size: 36px;
+    cursor: pointer;
 }
 
 .nav-button button {
@@ -39,6 +40,7 @@
     border: none;
     color: #ecf0f1;
     font-size: 24px;
+    cursor: pointer;
 }
 
 .nav-button button:hover {

@@ -19,11 +19,27 @@ const handleLogin = (email, password) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
-    }).then(res => res.json()).then(data => {
-        sessionStorage.setItem('token', data.token);
-        TOKEN = data.token;
-
-    });
+    }).then(res => {
+       if (!res.ok) {
+        throw new Error('shit')
+       }
+       return res.json()
+    })
+    
+    .then(data => {
+        if (data.success) {
+            sessionStorage.setItem('token', data.token);
+            TOKEN = data.token;
+        } else {
+            alert('shitt')
+        }
+        
+    })
+    
+    .catch(err => {
+        console.error(err)
+        alert('error... shit')
+    })
 }
 
 module.exports = {
