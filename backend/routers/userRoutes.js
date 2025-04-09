@@ -9,4 +9,10 @@ userRouter.post("/login", async (req, res) => {
     res.json(result);
 });
 
+userRouter.post("/validatetoken", async (req, res) => {
+    const { token } = req.body;
+    const result = await verifyToken(token);
+    res.json(result);
+});
+
 module.exports = userRouter;

@@ -30,6 +30,7 @@ const handleLogin = (email, password) => {
         if (data.success) {
             sessionStorage.setItem('token', data.token);
             TOKEN = data.token;
+
         } else {
             alert('shitt')
         }
@@ -42,7 +43,31 @@ const handleLogin = (email, password) => {
     })
 }
 
+const verifyToken = async (token) => {
+    try {
+      const res = await fetch('http://localhost:3001/user/validatetoken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to validate token');
+      }
+  
+      const data = await res.json();
+      return data.success; 
+  
+    } catch (err) {
+      console.error(err);
+      return null; 
+    }
+};  
+
 module.exports = {
     handleLogin,
-    getPosts
+    getPosts,
+    verifyToken
 }
