@@ -24,25 +24,8 @@ const Post = ({ post }) => {
             <span>By {post.username}</span>
 
             <div className="post-actions">
-                <button onClick={handleLike} className="like-button">❤️ Like ({likes})</button>
-            </div>
-
-            <div className="comments-section">
-                <h4>Comments</h4>
-                <ul>
-                    {comments.map((comment, index) => (
-                        <li key={index}>{comment}</li>
-                    ))}
-                </ul>
-                <div className="comment-form">
-                    <input 
-                        type="text" 
-                        value={newComment} 
-                        onChange={(e) => setNewComment(e.target.value)} 
-                        placeholder="Add a comment..." 
-                    />
-                    <button onClick={handleAddComment}>Post</button>
-                </div>
+                <button onClick={handleLike} className="action-button">❤️ Like ({likes})</button>
+                <button onClick={() => {}} className='action-button'>💬 Comment</button>
             </div>
         </div>
     );

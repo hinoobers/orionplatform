@@ -1,5 +1,5 @@
 .post {
-    background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
+    background: #2c3e50;
     border: 1px solid #2f2f2f;
     border-radius: 12px;
     padding: 20px;
@@ -38,10 +38,11 @@
 }
 
 .post-actions {
-    margin-bottom: 20px;
+
+
 }
 
-.like-button {
+.action-button {
     background-color: #1da1f2;
     border: none;
     color: #fff;
@@ -50,65 +51,9 @@
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
+    margin: 5px;
 }
 
-.like-button:hover {
-    background-color: #0d8ddb;
-}
-
-.comments-section {
-    border-top: 1px solid #2f2f2f;
-    padding-top: 15px;
-}
-
-.comments-section h4 {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-    color: #ffffff;
-}
-
-.comments-section ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 10px;
-}
-
-.comments-section li {
-    background-color: #262626;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-}
-
-.comment-form {
-    display: flex;
-    gap: 10px;
-}
-
-.comment-form input {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background-color: #1a1a1a;
-    color: #e6e6e6;
-}
-
-.comment-form input::placeholder {
-    color: #777;
-}
-
-.comment-form button {
-    background-color: #1da1f2;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.comment-form button:hover {
+.action-button:hover {
     background-color: #0d8ddb;
 }
