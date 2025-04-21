@@ -12,27 +12,33 @@ import RegisterForm from './components/UI/auth/RegisterForm';
 function App() {
   const location = useLocation(); // current url path
   console.log(location)
-  const [showPosts, setShowPosts] = useState(false);
+  const [showPosts, setShowPosts] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
     handleLogin(email, password);
-    window.location.href = "/";
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1000);
   };
 
   
 
   useEffect(() => {
     const checkToken = async () => {
+      console.log("Checking token");
       if(sessionStorage.getItem("token") !== null) {
+        console.log("Token found");	
         const result = await verifyToken(sessionStorage.getItem("token"));
         console.log("result", result);
         if(result == false) {
           window.location.href = "/login";
         } else {
-          
+          console.log("Token valid");
+          setShowPosts(true);
         }
       } else {
         window.location.href = "/login";
@@ -44,12 +50,13 @@ function App() {
     }
 
   }, []);
+
   return (
     <div className="App">
     {location.pathname === '/login' && <LoginForm handleSubmit={handleSubmit} />}
     {location.pathname === '/register' && <RegisterForm handleSubmit={handleSubmit} />}
     <SideNav />
-    <label>{showPosts}</label>
+    {showPosts && <PostList />}
     </div>
   );
 }

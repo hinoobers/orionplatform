@@ -13,12 +13,14 @@ const getPosts = async () =>{
 };
 
 const handleLogin = (email, password) => {
+    console.log("Login function called");
     fetch('http://localhost:3001/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
+        mode: 'cors'
     }).then(res => {
        if (!res.ok) {
         throw new Error('shit')
@@ -27,7 +29,9 @@ const handleLogin = (email, password) => {
     })
     
     .then(data => {
-        if (data.success) {
+      console.warn(data);
+        if (data.success === true) {
+            console.log(data);
             sessionStorage.setItem('token', data.token);
             TOKEN = data.token;
 
@@ -44,6 +48,7 @@ const handleLogin = (email, password) => {
 }
 
 const verifyToken = async (token) => {
+    console.log("Test!");
     try {
       const res = await fetch('http://localhost:3001/user/validatetoken', {
         method: 'POST',
