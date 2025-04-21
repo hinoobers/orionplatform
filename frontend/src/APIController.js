@@ -34,7 +34,6 @@ const handleLogin = (email, password) => {
             console.log(data);
             sessionStorage.setItem('token', data.token);
             TOKEN = data.token;
-
         } else {
             alert('shitt')
         }
@@ -47,8 +46,29 @@ const handleLogin = (email, password) => {
     })
 }
 
+const handleRegister = (username, email, password) => {
+  fetch('http://localhost:3001/user/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, email, password })
+  }).then(res => {
+    if (!res.ok) {
+      throw new Error('error?')
+    }
+    return res.json()
+  })
+
+  .then(data => {
+    if (data.success == true) {
+      alert('success')
+    }
+  })
+
+}
+
 const verifyToken = async (token) => {
-    console.log("Test!");
     try {
       const res = await fetch('http://localhost:3001/user/validatetoken', {
         method: 'POST',
@@ -73,6 +93,7 @@ const verifyToken = async (token) => {
 
 module.exports = {
     handleLogin,
+    handleRegister,
     getPosts,
     verifyToken
 }

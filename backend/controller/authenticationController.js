@@ -34,8 +34,18 @@ const login = async (email, password) => {
     }
 }
 
-const register = (email, password) => {
+const register = async (username, email, password) => {
+    const saltRounds = 10
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
 
+    const values = [username, email, hashedPassword];
+    const [result] = await pool.query('INSERT INTO users (username, email, hashed_password) VALUES (?, ?, ?)', values, function (err, result) {
+        if (err) { throw err }
+    });
+
+    return {
+        success: true
+    }
 }
 
 const verifyToken = (token) => {

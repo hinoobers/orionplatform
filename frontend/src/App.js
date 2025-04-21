@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import PostList from './components/PostList';
-import { handleLogin, isLogged, setToken, verifyToken } from './APIController';
+import { handleLogin, handleRegister, isLogged, setToken, verifyToken } from './APIController';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
@@ -12,20 +12,28 @@ import RegisterForm from './components/UI/auth/RegisterForm';
 function App() {
   const location = useLocation(); // current url path
   console.log(location)
-  const [showPosts, setShowPosts] = useState(true);
+  const [showPosts, setShowPosts] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit_login = (e) => {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
     handleLogin(email, password);
-
     setTimeout(() => {
-      window.location.href = "/";
-    }, 1000);
+      window.location.href = '/'
+    }, 1000)
   };
 
-  
+  const handleSubmit_register = (e) => {
+    e.preventDefault()
+    const username = e.target[0].value
+    const email = e.target[1].value
+    const password = e.target[2].value
+    handleRegister(username, email, password)
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 1000)
+  }
 
   useEffect(() => {
     const checkToken = async () => {
@@ -34,14 +42,14 @@ function App() {
         console.log("Token found");	
         const result = await verifyToken(sessionStorage.getItem("token"));
         console.log("result", result);
-        if(result == false) {
+        if (result == false) {
           window.location.href = "/login";
         } else {
           console.log("Token valid");
           setShowPosts(true);
         }
       } else {
-        window.location.href = "/login";
+        // window.location.href = "/login";
       }
     }
 
@@ -50,11 +58,10 @@ function App() {
     }
 
   }, []);
-
   return (
     <div className="App">
-    {location.pathname === '/login' && <LoginForm handleSubmit={handleSubmit} />}
-    {location.pathname === '/register' && <RegisterForm handleSubmit={handleSubmit} />}
+    {location.pathname === '/login' && <LoginForm handleSubmit={handleSubmit_login} />}
+    {location.pathname === '/register' && <RegisterForm handleSubmit={handleSubmit_register} />}
     <SideNav />
     {showPosts && <PostList />}
     </div>
