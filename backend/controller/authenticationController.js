@@ -43,6 +43,13 @@ const register = async (username, email, password) => {
         if (err) { throw err }
     });
 
+    if(result.affectedRows == 0) {
+        return {
+            success: false,
+            message: 'Failed to register user'
+        }
+    }
+
     return {
         success: true
     }
