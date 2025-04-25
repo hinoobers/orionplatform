@@ -25,7 +25,7 @@ const tweet = async (token, title, content) => {
         }
     }
 
-    const userId = token.userId;
+    const userId = tokenResult.user_id;
     const [result] = await pool.query("INSERT INTO posts (createdBy, title, content) VALUES (?, ?, ?)", [userId, title, content]);
     if (result.affectedRows === 0) {
         return {
