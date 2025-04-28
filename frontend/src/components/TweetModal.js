@@ -43,6 +43,7 @@ const TweetModal = (props) => {
           label="Title"
           variant="outlined"
           fullWidth
+          slotProps={{ htmlInput: { maxLength: 50 } }}
           sx={{ mt: 2 }}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -54,6 +55,7 @@ const TweetModal = (props) => {
           multiline
           rows={4}
           fullWidth
+          slotProps={{ htmlInput: { maxLength: 500 } }}
           sx={{ mt: 2 }}
           value={text}
           onChange={(e) => setText(e.target.value)}

@@ -13,7 +13,6 @@ const login = async (email, password) => {
 
     const user = result[0];
     const match = await bcrypt.compare(password, user.hashed_password);
-    console.log(password, user.hashed_password, match);
     if (!match) {
         return {
             success: false,

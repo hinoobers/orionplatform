@@ -33,6 +33,27 @@ const tweet = async (token, title, content) => {
         }
     }
 
+    if(!title || !content) {
+        return {
+            success: false,
+            message: 'Title and content are required'
+        }
+    }
+
+    if(title.length > 50) {
+        return {
+            success: false,
+            message: 'Title is too long'
+        }
+    }
+
+    if(content.length > 500) {
+        return {
+            success: false,
+            message: 'Content is too long'
+        }
+    }
+
     const userId = tokenResult.user_id;
     const [result] = await pool.query("INSERT INTO posts (createdBy, title, content) VALUES (?, ?, ?)", [userId, title, content]);
     if (result.affectedRows === 0) {
