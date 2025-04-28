@@ -1,5 +1,6 @@
 const { verifyToken } = require('./authenticationController');
 const pool = require('./databaseController');
+const { sendUpdatePacket } = require('./socketController');
 
 const getAll = async () => {
     let [result] = await pool.query("SELECT * FROM posts");
@@ -17,12 +18,14 @@ const getAll = async () => {
 
     return {
         success: true,
+        total: result.length,
         posts: result
     }
 }
 
 const tweet = async (token, title, content) => {
     const tokenResult = await verifyToken(token);
+    console.log(tokenResult, token);
     if (!tokenResult.success) {
         return {
             success: false,
@@ -39,13 +42,71 @@ const tweet = async (token, title, content) => {
         }
     }
 
+    sendUpdatePacket();
+
     return {
         success: true,
         message: 'Post created successfully'
     }
 }
 
+const like = async (token, postId) => {
+    const tokenResult = await verifyToken(token);
+    if (!tokenResult.success) {
+        return {
+            success: false,
+            message: 'Invalid token'
+        }
+    }
+
+    const userId = tokenResult.user_id;
+    const [result] = await pool.query("SELECT * FROM posts WHERE id = ?", [postId]);
+    if (result.length === 0) {
+        return {
+            success: false,
+            message: 'Post not found'
+        }
+    }
+
+    const post = result[0];
+    if(JSON.parse(post.likedBy).includes(userId)) {
+        // remove like 
+        const likes = JSON.parse(post.likedBy).filter((id) => id !== userId);
+        const [result] = await pool.query("UPDATE posts SET likedBy = ? WHERE id = ?", [JSON.stringify(likes), postId]);
+        if (result.affectedRows === 0) {
+            return {
+                success: false,
+                message: 'Failed to remove like'
+            }
+        } else {
+            sendUpdatePacket();
+            return {
+                success: true,
+                message: 'Like removed successfully'
+            }
+        }
+    } else {
+        // add like
+        const likes = JSON.parse(post.likedBy);
+        likes.push(userId);
+        const [result] = await pool.query("UPDATE posts SET likedBy = ? WHERE id = ?", [JSON.stringify(likes), postId]);
+        if (result.affectedRows === 0) {
+            return {
+                success: false,
+                message: 'Failed to add like'
+            }
+        } else {
+            sendUpdatePacket();
+            return {
+                success: true,
+                message: 'Like added successfully'
+            }
+        }
+    }
+}
+
 module.exports = {
     getAll,
-    tweet
+    tweet,
+    like
 }

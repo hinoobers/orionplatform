@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import SideNav from './components/UI/Menu';
 import LoginForm from './components/UI/auth/LoginForm';
 import RegisterForm from './components/UI/auth/RegisterForm';
+import TweetModal from './components/TweetModal';
 
 function App() {
   const location = useLocation(); // current url path
@@ -49,7 +50,7 @@ function App() {
           setShowPosts(true);
         }
       } else {
-        // window.location.href = "/login";
+        window.location.href = "/login";
       }
     }
 
@@ -58,11 +59,19 @@ function App() {
     }
 
   }, []);
+
+  const [tweetModalOpen, setTweetModalOpen] = useState(false);
+
+  const handleClose = () => {
+    setTweetModalOpen(false);
+  }
+
   return (
     <div className="App">
+    <TweetModal isOpen={tweetModalOpen} handleClose={handleClose} ></TweetModal>
     {location.pathname === '/login' && <LoginForm handleSubmit={handleSubmit_login} />}
     {location.pathname === '/register' && <RegisterForm handleSubmit={handleSubmit_register} />}
-    <SideNav />
+    <SideNav tweetModal={setTweetModalOpen} isTweetModalOpen={tweetModalOpen}/>
     {showPosts && <PostList />}
     </div>
   );

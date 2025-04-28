@@ -1,25 +1,72 @@
-import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from 'react'
+import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { useState } from 'react';
+import { handleTweetPost } from '../APIController';
 
-function Example() {
-  let [isOpen, setIsOpen] = useState(false)
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  borderRadius: '8px',
+  boxShadow: 24,
+  p: 4,
+};
+
+const TweetModal = (props) => {
+  console.log(props);
+  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
+
+
+  const handlePostTweet = () => {
+    handleTweetPost(title, text)
+    props.handleClose()
+  };
+
+  console.log(props.isOpen, "a");
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open dialog</button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
-            <DialogTitle className="font-bold">Deactivate account</DialogTitle>
-            <Description>This will permanently deactivate your account</Description>
-            <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-            <div className="flex gap-4">
-              <button onClick={() => setIsOpen(false)}>Cancel</button>
-              <button onClick={() => setIsOpen(false)}>Deactivate</button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+      <Modal
+        open={props.isOpen}
+        handleClose={props.handleClose}
+        aria-labelledby="tweet-modal-title"
+        aria-describedby="tweet-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="tweet-modal-title" variant="h6" component="h2">
+            What's happening?
+          </Typography>
+          <TextField
+          label="Title"
+          variant="outlined"
+          fullWidth
+          sx={{ mt: 2 }}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <TextField
+          label="What's happening?"
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+          sx={{ mt: 2 }}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant="contained" onClick={handlePostTweet} disabled={!title.trim() || !text.trim()}>
+              Tweet
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
-  )
-}
+  );
+};
+
+export default TweetModal;

@@ -1,5 +1,3 @@
-let TOKEN = null;
-
 const getPosts = async () =>{
     const result = await fetch("http://localhost:3001/posts/listall");
     const data = await result.json();
@@ -33,7 +31,6 @@ const handleLogin = (email, password) => {
         if (data.success === true) {
             console.log(data);
             sessionStorage.setItem('token', data.token);
-            TOKEN = data.token;
         } else {
             alert('shitt')
         }
@@ -68,6 +65,35 @@ const handleRegister = (username, email, password) => {
 
 }
 
+const handleTweetPost = (title, text) => {
+  fetch("http://localhost:3001/posts/tweet", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ token: sessionStorage.getItem("token"), title, content: text})
+  }).then(res => {
+    if(!res.ok) {
+      throw new Error("error?")
+    }
+
+  })
+}
+
+const handleTweetLike = (postId) => {
+  fetch("http://localhost:3001/posts/like", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ token: sessionStorage.getItem("token"), postId })
+  }).then(res => {
+    if(!res.ok) {
+      throw new Error("error?")
+    }
+  })
+}
+
 const verifyToken = async (token) => {
     try {
       const res = await fetch('http://localhost:3001/user/validatetoken', {
@@ -95,5 +121,7 @@ module.exports = {
     handleLogin,
     handleRegister,
     getPosts,
-    verifyToken
+    verifyToken,
+    handleTweetPost,
+    handleTweetLike
 }

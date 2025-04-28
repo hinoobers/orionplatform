@@ -21,7 +21,7 @@ const login = async (email, password) => {
         }
     }
 
-    const token = Math.random().toString(36).substring(2);
+    const token = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
     authentications.push({
         token,
         user_id: user.id

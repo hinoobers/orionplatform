@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import './Post.css';
+import { handleTweetLike } from '../APIController';
 
 const Post = ({ post }) => {
-    const [likes, setLikes] = useState(0);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
 
     const handleLike = () => {
-        setLikes(likes + 1);
+        handleTweetLike(post.id);
     };
 
     const handleAddComment = () => {
@@ -24,7 +24,7 @@ const Post = ({ post }) => {
             <span>By {post.username}</span>
 
             <div className="post-actions">
-                <button onClick={handleLike} className="action-button">❤️ Like ({likes})</button>
+                <button onClick={handleLike} className="action-button">❤️ Like ({JSON.parse(post.likedBy).length})</button>
                 <button onClick={() => {}} className='action-button'>💬 Comment</button>
             </div>
         </div>
