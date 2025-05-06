@@ -27,6 +27,7 @@
     line-height: 1.6;
     color: #cfcfcf;
     margin-bottom: 15px;
+    word-wrap: break-word;
 }
 
 .post span {

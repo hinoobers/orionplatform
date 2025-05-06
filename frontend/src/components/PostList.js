@@ -1,8 +1,9 @@
 // react component
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { getPosts } from '../APIController';
 import Post from './Post';
 import { io } from 'socket.io-client';
+const LazyComponent = React.lazy(() => import('./Post'));
 
 const socket = io('http://localhost:3002', {
     withCredentials: true,
@@ -34,7 +35,9 @@ const PostList = () => {
     return (
         <div className="post-list">
             {posts.map(post => (
-                <Post post={post}></Post>
+                <Suspense key={post.id} fallback={<div>Loading...</div>}>
+                    <LazyComponent post={post}></LazyComponent>
+                </Suspense>
             ))}
         </div>
     );
