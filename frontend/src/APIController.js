@@ -21,7 +21,7 @@ const handleLogin = (email, password) => {
         mode: 'cors'
     }).then(res => {
        if (!res.ok) {
-        throw new Error('shit')
+        throw new Error('Wrong credentials')
        }
        return res.json()
     })
@@ -32,14 +32,14 @@ const handleLogin = (email, password) => {
             console.log(data);
             sessionStorage.setItem('token', data.token);
         } else {
-            alert('shitt')
+            alert('Wrong credentials')
         }
         
     })
     
     .catch(err => {
         console.error(err)
-        alert('error... shit')
+        alert('Error: ' + err.message)
     })
 }
 

@@ -6,13 +6,13 @@ const {login, register, verifyToken} = require("../controller/authenticationCont
 userRouter.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const result = await login(email, password);
-    res.json(result);
+    res.status(result.statusCode || 200).json(result);
 });
 
 userRouter.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
     const result = await register(username, email, password)
-    res.json(result)
+    res.status(result.statusCode || 200).json(result)
 })
 
 userRouter.post("/validatetoken", async (req, res) => {

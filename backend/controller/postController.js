@@ -7,7 +7,8 @@ const getAll = async () => {
     if (result.length === 0) {
         return {
             success: false,
-            message: 'No posts found'
+            message: 'No posts found',
+            statusCode: 404
         }
     }
 
@@ -29,28 +30,32 @@ const tweet = async (token, title, content) => {
     if (!tokenResult.success) {
         return {
             success: false,
-            message: 'Invalid token'
+            message: 'Invalid token',
+            statusCode: 401
         }
     }
 
     if(!title || !content) {
         return {
             success: false,
-            message: 'Title and content are required'
+            message: 'Title and content are required',
+            statusCode: 400
         }
     }
 
     if(title.length > 50) {
         return {
             success: false,
-            message: 'Title is too long'
+            message: 'Title is too long',
+            statusCode: 400
         }
     }
 
     if(content.length > 500) {
         return {
             success: false,
-            message: 'Content is too long'
+            message: 'Content is too long',
+            statusCode: 400
         }
     }
 
@@ -59,7 +64,8 @@ const tweet = async (token, title, content) => {
     if (result.affectedRows === 0) {
         return {
             success: false,
-            message: 'Failed to create post'
+            message: 'Failed to create post',
+            statusCode: 500
         }
     }
 
@@ -67,7 +73,8 @@ const tweet = async (token, title, content) => {
 
     return {
         success: true,
-        message: 'Post created successfully'
+        message: 'Post created successfully',
+        postId: result.insertId
     }
 }
 

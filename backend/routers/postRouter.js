@@ -11,7 +11,7 @@ postRouter.get("/listall", async (req, res) => {
 postRouter.post("/tweet", async (req, res) => {
     const { token, title, content } = req.body;
     const result = await tweet(token, title, content);
-    res.json(result);
+    res.status(result.statusCode || 200).json(result);
 })
 
 postRouter.post("/like", async (req, res) => {

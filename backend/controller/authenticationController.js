@@ -7,6 +7,7 @@ const login = async (email, password) => {
     if (result.length === 0) {
         return {
             success: false,
+            statusCode: 404,
             message: 'User not found'
         }
     }
@@ -16,6 +17,7 @@ const login = async (email, password) => {
     if (!match) {
         return {
             success: false,
+            statusCode: 401,
             message: 'Invalid password'
         }
     }
@@ -34,6 +36,14 @@ const login = async (email, password) => {
 }
 
 const register = async (username, email, password) => {
+    if(!username || !email || !password) {
+        return {
+            success: false,
+            statusCode: 400,
+            message: 'Missing required fields'
+        }
+    }
+
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
