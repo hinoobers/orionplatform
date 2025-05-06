@@ -16,7 +16,7 @@ const RegisterForm = (a) => {
                 <input type="password" id="password" />
             </div>
             <div className="form-actions">
-                <button type="submit">Create</button>
+                <button type="submit">Register</button>
             </div>
         </form>
     );
