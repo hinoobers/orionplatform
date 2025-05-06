@@ -9,8 +9,12 @@ const SideNav = (props) => {
   const isLoggedIn = !!sessionStorage.getItem("token");
 
   const toggle = () => {
-    props.tweetModal(!props.isTweetModalOpen);
-    console.log("Tweet modal open", props.isTweetModalOpen);
+    if(isLoggedIn) {
+      props.tweetModal(!props.isTweetModalOpen);
+      console.log("Tweet modal open", props.isTweetModalOpen);
+    } else {
+      alert("You need to be logged in for that!");
+    }
   }
 
   return (
@@ -23,6 +27,11 @@ const SideNav = (props) => {
           <button onClick={toggle}>Tweet</button>
         </div>
         
+        {!isLoggedIn && (
+          <div className='nav-button'>
+            <button onClick={() => window.location.href = "/register"}>Register</button>
+          </div>
+        )}
         {isLoggedIn && (
           <div className='nav-button'>
             <button onClick={handleLogout}>Log out</button>

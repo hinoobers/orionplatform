@@ -1,4 +1,5 @@
-import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close'; // Import Close Icon
 import { useState } from 'react';
 import { handleTweetPost } from '../APIController';
 
@@ -21,25 +22,34 @@ const TweetModal = (props) => {
 
 
   const handlePostTweet = () => {
-    handleTweetPost(title, text)
-    props.handleClose()
+    handleTweetPost(title, text);
+    props.handleClose();
   };
 
-  console.log(props.isOpen, "a");
-
   return (
-    <>
-      <Modal
-        open={props.isOpen}
-        handleClose={props.handleClose}
-        aria-labelledby="tweet-modal-title"
-        aria-describedby="tweet-modal-description"
-      >
-        <Box sx={style}>
+    <Modal
+      open={props.isOpen}
+      onClose={props.handleClose}  // Ensure modal closes when clicked outside
+      aria-labelledby="tweet-modal-title"
+      aria-describedby="tweet-modal-description"
+    >
+      <Box sx={style}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography id="tweet-modal-title" variant="h6" component="h2">
             What's happening?
           </Typography>
-          <TextField
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={props.handleClose}
+            aria-label="close"
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <TextField
           label="Title"
           variant="outlined"
           fullWidth
@@ -60,14 +70,14 @@ const TweetModal = (props) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" onClick={handlePostTweet} disabled={!title.trim() || !text.trim()}>
-              Tweet
-            </Button>
-          </Box>
+        
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant="contained" onClick={handlePostTweet} disabled={!title.trim() || !text.trim()}>
+            Tweet
+          </Button>
         </Box>
-      </Modal>
-    </>
+      </Box>
+    </Modal>
   );
 };
 

@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     const checkToken = async () => {
       console.log("Checking token");
-      if(sessionStorage.getItem("token") !== null) {
+      if(sessionStorage.getItem("token") !== null && location.pathname === "/") {
         console.log("Token found");	
         const result = await verifyToken(sessionStorage.getItem("token"));
         console.log("result", result);
@@ -47,6 +47,7 @@ function App() {
           window.location.href = "/login";
         } else {
           console.log("Token valid");
+          
           setShowPosts(true);
         }
       } else {
@@ -54,7 +55,7 @@ function App() {
       }
     }
 
-    if(location.pathname !== "/login") {
+    if(location.pathname !== "/login" && location.pathname !== "/register") { 
       checkToken();
     }
 
@@ -65,6 +66,7 @@ function App() {
   const handleClose = () => {
     setTweetModalOpen(false);
   }
+
 
   return (
     <div className="App">

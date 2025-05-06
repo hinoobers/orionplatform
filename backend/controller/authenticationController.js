@@ -44,6 +44,16 @@ const register = async (username, email, password) => {
         }
     }
 
+    const [existingUser] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (existingUser.length > 0) {
+        return {
+            success: false,
+            statusCode: 409,
+            message: 'Email already exists'
+        }
+    }
+
+
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
