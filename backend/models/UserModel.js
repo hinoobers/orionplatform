@@ -3,7 +3,7 @@ const { Sequelize, DataTypes} = require('sequelize');
 const sequelize = require('../controller/databaseController');
 
 const User = sequelize.define(
-    'User',
+    'users',
     {
         id: {
             type: DataTypes.INTEGER,

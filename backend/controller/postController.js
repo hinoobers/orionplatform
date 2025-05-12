@@ -2,8 +2,11 @@ const { verifyToken } = require('./authenticationController');
 const pool = require('./databaseController');
 const { sendUpdatePacket } = require('./socketController');
 
+const User = require("../models/UserModel");
+const Post = require('../models/PostModel')
+
 const getAll = async () => {
-    let [result] = await pool.query("SELECT * FROM posts");
+    const result = await Post.findAll()
     if (result.length === 0) {
         return {
             success: false,
@@ -13,8 +16,8 @@ const getAll = async () => {
     }
 
     for(let i = 0; i < result.length; i++) {
-        const [user] = await pool.query("SELECT * FROM users WHERE id = ?", [result[i].createdBy]);
-        result[i].username = user[0].username;
+        const user = await User.findOne({ where: { id: result[i].createdBy } });
+        result[i].username = user.username;
     }
 
     return {
@@ -60,14 +63,20 @@ const tweet = async (token, title, content) => {
     }
 
     const userId = tokenResult.user_id;
-    const [result] = await pool.query("INSERT INTO posts (createdBy, title, content) VALUES (?, ?, ?)", [userId, title, content]);
-    if (result.affectedRows === 0) {
-        return {
-            success: false,
-            message: 'Failed to create post',
-            statusCode: 500
-        }
-    }
+    const result = await Post.create({
+        createdBy: userId,
+        title: title,
+        content: content
+    });
+    
+    // UNDEFINED
+    // if (result.affectedRows === 0) {
+    //     return {
+    //         success: false,
+    //         message: 'Failed to create post',
+    //         statusCode: 500
+    //     }
+    // }
 
     sendUpdatePacket();
 
@@ -88,7 +97,7 @@ const like = async (token, postId) => {
     }
 
     const userId = tokenResult.user_id;
-    const [result] = await pool.query("SELECT * FROM posts WHERE id = ?", [postId]);
+    const result = await Post.findOne({ where: { id: postId } });
     if (result.length === 0) {
         return {
             success: false,
@@ -96,40 +105,46 @@ const like = async (token, postId) => {
         }
     }
 
-    const post = result[0];
+    const post = result;
     if(JSON.parse(post.likedBy).includes(userId)) {
         // remove like 
         const likes = JSON.parse(post.likedBy).filter((id) => id !== userId);
-        const [result] = await pool.query("UPDATE posts SET likedBy = ? WHERE id = ?", [JSON.stringify(likes), postId]);
-        if (result.affectedRows === 0) {
-            return {
-                success: false,
-                message: 'Failed to remove like'
-            }
-        } else {
+        const result = await Post.update(
+            { likedBy: JSON.stringify(likes) },
+            { where: { id: postId } }
+        )
+        // if (result.affectedRows === 0) {
+        //     return {
+        //         success: false,
+        //         message: 'Failed to remove like'
+        //     }
+        // } else {
             sendUpdatePacket();
             return {
                 success: true,
                 message: 'Like removed successfully'
             }
-        }
+        // }
     } else {
         // add like
         const likes = JSON.parse(post.likedBy);
         likes.push(userId);
-        const [result] = await pool.query("UPDATE posts SET likedBy = ? WHERE id = ?", [JSON.stringify(likes), postId]);
-        if (result.affectedRows === 0) {
-            return {
-                success: false,
-                message: 'Failed to add like'
-            }
-        } else {
+        const result = await Post.update(
+            { likedBy: JSON.stringify(likes)},
+            { where: { id: postId } }
+        )
+        // if (result.affectedRows === 0) {
+        //     return {
+        //         success: false,
+        //         message: 'Failed to add like'
+        //     }
+        // } else {
             sendUpdatePacket();
             return {
                 success: true,
                 message: 'Like added successfully'
             }
-        }
+        // }
     }
 }
 

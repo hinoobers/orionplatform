@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 
+// the act of pushing this to the repository is intentional
 const sequelize = new Sequelize('s4_adb', 'u4_hroCOsRSC1', 'hTVAwmLSIYAnB8YE.@6mj1V@', {
   host: 'ss.byenoob.com',
   dialect: 'mysql',

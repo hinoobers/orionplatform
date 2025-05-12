@@ -5,7 +5,7 @@ const authentications = [];
 
 const login = async (email, password) => {
     try {
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email: email } });
 
         if (!user) {
             return {
@@ -55,7 +55,7 @@ const register = async (username, email, password) => {
     }
 
     try {
-        const existingUser = await User.findOne({ where: { email } });
+        const existingUser = await User.findOne({ where: { email: email } });
 
         if (existingUser) {
             return {
