@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "mysql2": "^3.14.0",
+    "sequelize": "^6.37.7",
     "socket.io": "^4.8.1",
     "supertest": "^7.1.0"
   },
