@@ -2,7 +2,8 @@ const request = require('supertest');
 const express = require('express');
 const postRouter = require('../routers/postRouter'); 
 const userRouter = require('../routers/userRoutes');
-const db = require("../controller/databaseController");
+
+const Post = require('../models/PostModel');
 
 const app = express();
 app.use(express.json()); 
@@ -26,7 +27,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    await db.query('DELETE FROM posts WHERE id = ?', [postId]);
+    await Post.destroy({ where: { id: postId } })
 });
 
 describe('POST api/tweet', () => {
@@ -70,7 +71,6 @@ describe('POST api/tweet', () => {
             content: 'This is a test post content.'
         });
     expect(response.statusCode).toBe(200);
-
     expect(response.body).toHaveProperty('postId');
     postId = response.body.postId; 
   });

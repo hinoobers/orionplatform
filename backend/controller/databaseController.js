@@ -12,7 +12,7 @@ const sequelize = new Sequelize('s4_adb', 'u4_hroCOsRSC1', 'hTVAwmLSIYAnB8YE.@6m
     evict: 1000,     
   },
   dialectOptions: {
-    keepAlive: true,    
+    // keepAlive: true, throws warning
   },
   define: {
     timestamps: false,  

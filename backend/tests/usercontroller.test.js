@@ -1,18 +1,15 @@
 const request = require('supertest');
 const express = require('express');
 const userRouter = require('../routers/userRoutes'); 
-const db = require("../controller/databaseController");
+const User = require("../models/UserModel");
 
 const app = express();
 app.use(express.json()); 
 app.use('/api', userRouter); 
 
-const token = "";
-
 describe('POST /api/register', () => {
   beforeAll(async () => {
-    await db.query('DELETE FROM users WHERE email = ?', ['testuser@gmail.com']);
-
+    await User.destroy({ where: { email: 'testuser@example.com' } });
   });
   it('should register a user successfully', async () => {
     const response = await request(app)
@@ -65,8 +62,8 @@ describe('POST /api/login', () => {
             .post('/api/login')
             .send({
                 email: 'test@gmail.com',
-                password: 'test'
+                password: '09876543dsa'
             });
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(401);
     });
 });

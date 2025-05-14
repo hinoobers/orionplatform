@@ -3,7 +3,7 @@ const pool = require('./databaseController');
 const { sendUpdatePacket } = require('./socketController');
 
 const User = require("../models/UserModel");
-const Post = require('../models/PostModel')
+const Post = require('../models/PostModel');
 
 const getAll = async () => {
     const result = await Post.findAll()
@@ -69,21 +69,20 @@ const tweet = async (token, title, content) => {
         content: content
     });
     
-    // UNDEFINED
-    // if (result.affectedRows === 0) {
-    //     return {
-    //         success: false,
-    //         message: 'Failed to create post',
-    //         statusCode: 500
-    //     }
-    // }
+    if (!result) {
+        return {
+            success: false,
+            message: 'Failed to create post',
+            statusCode: 500
+        }
+    }
 
     sendUpdatePacket();
 
     return {
         success: true,
         message: 'Post created successfully',
-        postId: result.insertId
+        postId: result['dataValues'].id
     }
 }
 
@@ -113,18 +112,18 @@ const like = async (token, postId) => {
             { likedBy: JSON.stringify(likes) },
             { where: { id: postId } }
         )
-        // if (result.affectedRows === 0) {
-        //     return {
-        //         success: false,
-        //         message: 'Failed to remove like'
-        //     }
-        // } else {
+        if (!result) {
+            return {
+                success: false,
+                message: 'Failed to remove like'
+            }
+        } else {
             sendUpdatePacket();
             return {
                 success: true,
                 message: 'Like removed successfully'
             }
-        // }
+        }
     } else {
         // add like
         const likes = JSON.parse(post.likedBy);
@@ -133,18 +132,18 @@ const like = async (token, postId) => {
             { likedBy: JSON.stringify(likes)},
             { where: { id: postId } }
         )
-        // if (result.affectedRows === 0) {
-        //     return {
-        //         success: false,
-        //         message: 'Failed to add like'
-        //     }
-        // } else {
+        if (!result) {
+            return {
+                success: false,
+                message: 'Failed to add like'
+            }
+        } else {
             sendUpdatePacket();
             return {
                 success: true,
                 message: 'Like added successfully'
             }
-        // }
+        }
     }
 }
 

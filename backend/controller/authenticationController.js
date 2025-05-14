@@ -56,7 +56,7 @@ const register = async (username, email, password) => {
 
     try {
         const existingUser = await User.findOne({ where: { email: email } });
-
+        console.log(existingUser)
         if (existingUser) {
             return {
                 success: false,
