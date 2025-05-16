@@ -1,5 +1,5 @@
 const getPosts = async () =>{
-    const result = await fetch("http://localhost:3001/posts/listall");
+    const result = await fetch("http://ss.byenoob.com:5080/posts/listall");
     const data = await result.json();
     if(!data.success) {
         console.log("No posts found");
@@ -12,7 +12,7 @@ const getPosts = async () =>{
 
 const handleLogin = (email, password) => {
     console.log("Login function called");
-    fetch('http://localhost:3001/user/login', {
+    fetch('http://ss.byenoob.com:5080/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ const handleLogin = (email, password) => {
 }
 
 const handleRegister = (username, email, password) => {
-  fetch('http://localhost:3001/user/register', {
+  fetch('http://ss.byenoob.com:5080/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ const handleRegister = (username, email, password) => {
 }
 
 const handleTweetPost = (title, text) => {
-  fetch("http://localhost:3001/posts/tweet", {
+  fetch("http://ss.byenoob.com:5080/posts/tweet", {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ const handleTweetPost = (title, text) => {
 }
 
 const handleTweetLike = (postId) => {
-  fetch("http://localhost:3001/posts/like", {
+  fetch("http://ss.byenoob.com:5080/posts/like", {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ const handleTweetLike = (postId) => {
 
 const verifyToken = async (token) => {
     try {
-      const res = await fetch('http://localhost:3001/user/validatetoken', {
+      const res = await fetch('http://ss.byenoob.com:5080/user/validatetoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
