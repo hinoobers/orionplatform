@@ -5,10 +5,10 @@ import Post from './Post';
 import { io } from 'socket.io-client';
 const LazyComponent = React.lazy(() => import('./Post'));
 
-const socket = io('https://orionapi.byenoob.com/socket.io/', {
-    withCredentials: true,
-    transports: ['websocket'], // Use WebSockets for faster communication
-  });
+const socket = io("https://orionapi.byenoob.com", {
+    path: "/socket.io",
+    transports: ["websocket"]
+});
 
 const PostList = () => {
     console.log("PostList component rendered");
