@@ -5,7 +5,7 @@ import Post from './Post';
 import { io } from 'socket.io-client';
 const LazyComponent = React.lazy(() => import('./Post'));
 
-const socket = io('http://ss.byenoob.com:5083', {
+const socket = io('https://orionapi.byenoob.com/socket.io', {
     withCredentials: true,
     transports: ['websocket'], // Use WebSockets for faster communication
   });
