@@ -58,3 +58,11 @@
 .action-button:hover {
     background-color: #0d8ddb;
 }
+
+@media (max-width: 768px) {
+
+    .post {
+        width: 80%;
+        margin: 10px auto;
+    }
+}

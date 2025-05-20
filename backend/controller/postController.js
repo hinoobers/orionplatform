@@ -6,26 +6,31 @@ const User = require("../models/UserModel");
 const Post = require('../models/PostModel');
 
 const getAll = async () => {
-    const result = await Post.findAll()
-    if (result.length === 0) {
+    const posts = await Post.findAll();
+    if (posts.length === 0) {
         return {
             success: false,
             message: 'No posts found',
             statusCode: 404
-        }
+        };
     }
 
-    for(let i = 0; i < result.length; i++) {
-        const user = await User.findOne({ where: { id: result[i].createdBy } });
-        result[i].username = user.username;
-    }
+    const postsWithUsername = await Promise.all(
+        posts.map(async (post) => {
+            const user = await User.findOne({ where: { id: post.createdBy } });
+            return {
+                ...post.get({ plain: true }), 
+                username: user ? user.username : null, 
+            };
+        })
+    );
 
     return {
         success: true,
-        total: result.length,
-        posts: result
-    }
-}
+        total: postsWithUsername.length,
+        posts: postsWithUsername
+    };
+};
 
 const tweet = async (token, title, content) => {
     const tokenResult = await verifyToken(token);
